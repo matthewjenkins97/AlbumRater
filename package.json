@@ -2,7 +2,7 @@
   "name": "AlbumRater",
   "version": "0.1.0",
   "private": true,
-  "url": "https://matthewjenkins97.github.io/AlbumRater/",
+  "homepage": "https://matthewjenkins97.github.io/AlbumRater/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
