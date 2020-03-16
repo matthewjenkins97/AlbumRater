@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1118597ea86fced690a8fcf5f1b1b00b",
+    "revision": "89c20c83b81ae721d13303c723012705",
     "url": "/AlbumRater/index.html"
   },
   {
-    "revision": "372c0724107f71de61b9",
+    "revision": "e2a13506dfe80a68e415",
     "url": "/AlbumRater/static/css/main.ef6877ba.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/AlbumRater/static/js/2.1ad66654.chunk.js.LICENSE"
   },
   {
-    "revision": "372c0724107f71de61b9",
-    "url": "/AlbumRater/static/js/main.d845ae09.chunk.js"
+    "revision": "e2a13506dfe80a68e415",
+    "url": "/AlbumRater/static/js/main.e551a2de.chunk.js"
   },
   {
     "revision": "882ba878f5eb2d4d23fe",
