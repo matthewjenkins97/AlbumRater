@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/SpotifyAlbumRater/precache-manifest.b0533f88037a69557820e728709ea13f.js"
+  "/SpotifyAlbumRater/precache-manifest.d64a656ceb7235db54093e6ca31e6285.js"
 );
 
 self.addEventListener('message', (event) => {
