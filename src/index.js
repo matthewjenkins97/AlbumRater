@@ -10,7 +10,7 @@ ReactDOM.render(<Router basename={process.env.PUBLIC_URL}>
     <Auth0Provider
         domain="dev-06brcesa.us.auth0.com"
         clientId="aExrjSgZXrCRZAcUVZ9Ol6w2P3nBkrue"
-        redirectUri={window.location.origin}
+        redirectUri={window.location.origin + window.location.pathname}
         audience="https://dev-06brcesa.us.auth0.com/api/v2/"
         scope="read:current_user read:user_idp_tokens"
     >

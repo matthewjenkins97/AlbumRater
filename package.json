@@ -1,8 +1,8 @@
 {
-  "name": "AlbumRater",
+  "name": "SpotifyAlbumRater",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://matthewjenkins97.github.io/AlbumRater/",
+  "private": false,
+  "homepage": "https://matthewjenkins97.github.io/SpotifyAlbumRater/",
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@testing-library/jest-dom": "^4.2.4",

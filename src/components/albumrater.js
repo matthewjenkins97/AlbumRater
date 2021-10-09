@@ -3,7 +3,7 @@ import { withAuth0 } from "@auth0/auth0-react";
 
 class AlbumRater extends React.Component {
   /**
-   * Represents an Album Rater object. Creates an initial state with 0 tracks.
+   * Represents an Album Rater object.
    * @constructor
    * @param {object} props - Props for the AlbumRater object (not used).
    */
@@ -27,6 +27,8 @@ class AlbumRater extends React.Component {
     const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?';
     const SPOTIFY_USER_URL = 'https://api.spotify.com/v1/me/tracks/?';
     const { user, getAccessTokenSilently } = this.props.auth0;
+
+    document.getElementById('calculatedScore').innerHTML = 'Loading rating...';
 
     // get user information via auth0
     
@@ -129,7 +131,7 @@ class AlbumRater extends React.Component {
               <label htmlFor="artistname">Artist: </label>
               <input type="text" id="artist" name="artistname"></input>
             </div>
-            <button style={{float: 'right'}} onClick={() => logout({returnTo: window.location.origin })}>Logout</button>
+            <button style={{float: 'right'}} onClick={() => logout({returnTo: window.location.origin + window.location.pathname })}>Logout</button>
             <br />
             <div style = {{float: 'left'}}>
               <label htmlFor="albumname">Album: </label>
