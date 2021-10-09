@@ -25,13 +25,12 @@ class AlbumRater extends React.Component {
     // let total = 0;
     const MGMT_TOKEN_URL = 'https://dev-06brcesa.us.auth0.com/api/v2/users/' ;
     const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?';
-    const SPOTIFY_USER_URL = 'https://api.spotify.com/v1/me/tracks/?';
+    const SPOTIFY_ALBUM_URL = 'https://api.spotify.com/v1/albums/';
+    const SPOTIFY_USER_URL = 'https://api.spotify.com/v1/me/tracks/contains?';
     const { user, getAccessTokenSilently } = this.props.auth0;
 
     document.getElementById('calculatedScore').innerHTML = 'Loading rating...';
 
-    // get user information via auth0
-    
     const userToken = await getAccessTokenSilently();
     const mgmtUserInfo = await (await fetch(`${MGMT_TOKEN_URL}${user.sub}`, {
       headers: {
@@ -43,67 +42,44 @@ class AlbumRater extends React.Component {
     //console.log(mgmtUserInfo.accessToken);
 
     // getting album by doing a search with the artist / album values
-    const searchParams = {
+    let searchParams = {
       q: `${document.getElementById('album').value} ${document.getElementById('artist').value}`,
       type: 'album',
       limit: 1
-    }
+    };
     const spotifySearchInfo = await (await fetch(`${SPOTIFY_SEARCH_URL}${new URLSearchParams(searchParams)}`, {
       headers: {
         Authorization: `Bearer ${mgmtUserInfo.accessToken}`
       }
     })).json();
-    const album = spotifySearchInfo.albums.items[0];
-    
-    // fetch user's likes and do a quick filter based on whether the likes are in the album mentioned
-    // sleep a half second, then do a call on the user's liked tracks list
-    // add object to spotifyUserLikes if spotifyUserInfo.items isn't empty
-    let offsetVal = 0;
-    let spotifyUserLikes = []
-    let spotifyUserInfo = {};
-    do {
-      // fetch tracks in batches of 50 tracks
-      const userParams = {
-        limit: 50,
-        offset: offsetVal * 50
-      };
-      spotifyUserInfo = await (await fetch(`${SPOTIFY_USER_URL}${new URLSearchParams(userParams)}`, {
-        headers: {
-          Authorization: `Bearer ${mgmtUserInfo.accessToken}`
-        }
-      })).json();
-
-      // add only if there are items in the items member of the object
-      if (spotifyUserInfo.items.length !== 0) {
-        spotifyUserLikes[offsetVal] = spotifyUserInfo;
-      }
-
-      // incrementing
-      offsetVal++;
-      // console.log(spotifyUserLikes);
-
-    } while (spotifyUserInfo.items.length !== 0);
-
-    // getting liked track lengths and adding them to a variable
-    let likedTrackDurations = 0;
-    for (let page of spotifyUserLikes) {
-      for (let item of page.items) {
-        if (item.track.album.name === album.name) {
-          likedTrackDurations = likedTrackDurations += item.track.duration_ms;
-      }
-    }
-
-    // getting all album tracks
-    const spotifyTrackInfo = await (await fetch(`https://api.spotify.com/v1/albums/${album.id}/tracks`, {
+    const albumName = spotifySearchInfo.albums.items[0].id;
+    const spotifyAlbumInfo = await (await fetch(`${SPOTIFY_ALBUM_URL}${albumName}`, {
       headers: {
         Authorization: `Bearer ${mgmtUserInfo.accessToken}`
       }
     })).json();
 
-    //calculating total album length
+    // getting tracks on the album that are liked by the user
+    const trackIds = [];
+    for (let track of spotifyAlbumInfo.tracks.items) {
+      trackIds.push(track.id);
+    }
+    searchParams = { ids: trackIds };
+    const spotifyLikedTrackInfo = await (await fetch(`${SPOTIFY_USER_URL}${new URLSearchParams(searchParams)}`, {
+      headers: {
+        Authorization: `Bearer ${mgmtUserInfo.accessToken}`
+      }
+    })).json();
+
+    //calculating liked track length and total album length
+    let likedTrackDurations = 0;
     let totalTrackDurations = 0;
-    for (let item of spotifyTrackInfo.items) {
-      totalTrackDurations = totalTrackDurations += item.duration_ms;
+    const albumInfo = spotifyAlbumInfo.tracks.items;
+    for (let i = 0; i < albumInfo.length; i++) {
+      if (spotifyLikedTrackInfo[i]) {
+        likedTrackDurations = likedTrackDurations += albumInfo[i].duration_ms;
+      }
+      totalTrackDurations = totalTrackDurations + albumInfo[i].duration_ms;
     }
 
     // // presenting the math
@@ -114,7 +90,6 @@ class AlbumRater extends React.Component {
       document.getElementById('calculatedScore').innerHTML = `Album rating: ${Math.round((likedTrackDurations / totalTrackDurations) * 10) / 2} out of 5`;
     }
   }
-}
 
   /**
    * Renders object.
