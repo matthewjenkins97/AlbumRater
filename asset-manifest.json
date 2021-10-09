@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/SpotifyAlbumRater/static/css/main.ef6877ba.chunk.css",
-    "main.js": "/SpotifyAlbumRater/static/js/main.7d92543c.chunk.js",
-    "main.js.map": "/SpotifyAlbumRater/static/js/main.7d92543c.chunk.js.map",
+    "main.js": "/SpotifyAlbumRater/static/js/main.446fac52.chunk.js",
+    "main.js.map": "/SpotifyAlbumRater/static/js/main.446fac52.chunk.js.map",
     "runtime-main.js": "/SpotifyAlbumRater/static/js/runtime-main.ec2812eb.js",
     "runtime-main.js.map": "/SpotifyAlbumRater/static/js/runtime-main.ec2812eb.js.map",
     "static/js/2.ecf63f31.chunk.js": "/SpotifyAlbumRater/static/js/2.ecf63f31.chunk.js",
     "static/js/2.ecf63f31.chunk.js.map": "/SpotifyAlbumRater/static/js/2.ecf63f31.chunk.js.map",
     "index.html": "/SpotifyAlbumRater/index.html",
-    "precache-manifest.ef1471d6f8ace7a14fc0dc1bbcbdbfbe.js": "/SpotifyAlbumRater/precache-manifest.ef1471d6f8ace7a14fc0dc1bbcbdbfbe.js",
+    "precache-manifest.b0533f88037a69557820e728709ea13f.js": "/SpotifyAlbumRater/precache-manifest.b0533f88037a69557820e728709ea13f.js",
     "service-worker.js": "/SpotifyAlbumRater/service-worker.js",
     "static/css/main.ef6877ba.chunk.css.map": "/SpotifyAlbumRater/static/css/main.ef6877ba.chunk.css.map",
     "static/js/2.ecf63f31.chunk.js.LICENSE.txt": "/SpotifyAlbumRater/static/js/2.ecf63f31.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.ec2812eb.js",
     "static/js/2.ecf63f31.chunk.js",
     "static/css/main.ef6877ba.chunk.css",
-    "static/js/main.7d92543c.chunk.js"
+    "static/js/main.446fac52.chunk.js"
   ]
 }
