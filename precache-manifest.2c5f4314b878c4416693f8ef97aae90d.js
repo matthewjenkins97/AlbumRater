@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8e446b10346da65ce8e25046701437cb",
+    "revision": "9f7b5ccedfb6f200696c63be61d9c202",
     "url": "/SpotifyAlbumRater/index.html"
   },
   {
-    "revision": "b3d3b5c810f9468d3b64",
+    "revision": "88b0e2a9cdf2580ae1af",
     "url": "/SpotifyAlbumRater/static/css/main.ef6877ba.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SpotifyAlbumRater/static/js/2.d230e65d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b3d3b5c810f9468d3b64",
-    "url": "/SpotifyAlbumRater/static/js/main.934dc4ec.chunk.js"
+    "revision": "88b0e2a9cdf2580ae1af",
+    "url": "/SpotifyAlbumRater/static/js/main.d202cd90.chunk.js"
   },
   {
     "revision": "7e51f6f58dd4afdc1114",
