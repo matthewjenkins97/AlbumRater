@@ -1,116 +1,111 @@
 import React from 'react';
-import { withAuth0 } from "@auth0/auth0-react";
 
-class AlbumRater extends React.Component {
+export default class AlbumRater extends React.Component {
   /**
-   * Represents an Album Rater object.
+   * Represents an Album Rater object. Creates an initial state with 0 tracks.
    * @constructor
    * @param {object} props - Props for the AlbumRater object (not used).
    */
-
   constructor(props) {
     super(props);
 
+    // setting initial variables
+    this.trackNumber = 0;
+
     // binds
-    this.calculate = this.calculate.bind(this);
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.calculateTrad = this.calculateTrad.bind(this);
   }
 
   /**
    * Calculates the score.
    * @method
    */
-  async calculate() {
+  calculateTrad() {
     // calculates score based on number of seconds of each liked track over number of seconds of every track.
-    const MGMT_TOKEN_URL = 'https://dev-06brcesa.us.auth0.com/api/v2/users/' ;
-    const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search?';
-    const SPOTIFY_ALBUM_URL = 'https://api.spotify.com/v1/albums/';
-    const SPOTIFY_USER_URL = 'https://api.spotify.com/v1/me/tracks/contains?';
-    const { user, getAccessTokenSilently } = this.props.auth0;
+    let liked = 0;
+    let total = 0;
 
-    document.getElementById('calculatedScore').innerHTML = 'Loading rating...';
+    // calculating by every track provided in the <ol>
+    for (let i = 1; i < this.trackNumber + 1; i++) {
+      const minutes = parseInt(document.getElementById('trackMinutes' + i).value);
+      const seconds = parseInt(document.getElementById('trackSeconds' + i).value);
+      const approval = document.getElementById('trackApproval' + i).checked;
 
-    // quick error check
-    if (document.getElementById('album').value === "" || 
-        document.getElementById('artist').value === "") {
-      document.getElementById('calculatedScore').innerHTML = 'Please fill in any missing data and try again.';
-      return;
-    }
-
-    // getting access token
-    const userToken = await getAccessTokenSilently();
-    const mgmtUserInfo = await (await fetch(`${MGMT_TOKEN_URL}${user.sub}`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`
+      // edge guarding
+      // anything blank?
+      if (isNaN(minutes) || isNaN(seconds)) {
+        alert('Please fill any missing data.');
+        return;
       }
-    })).json();
-
-    // may need when debugging with postman
-    //console.log(mgmtUserInfo.accessToken);
-
-    try {
-      // getting album by doing a search with the artist / album values
-      let searchParams = {
-        q: `${document.getElementById('album').value} ${document.getElementById('artist').value}`,
-        type: 'album',
-        limit: 1
-      };
-
-      // getting search and album information from api
-      const spotifySearchInfo = await (await fetch(`${SPOTIFY_SEARCH_URL}${new URLSearchParams(searchParams)}`, {
-        headers: {
-          Authorization: `Bearer ${mgmtUserInfo.accessToken}`
-        }
-      })).json();
-
-      // quick catch to prevent error on next api call
-      if (spotifySearchInfo.albums.items[0] === undefined) {
-        document.getElementById('calculatedScore').innerHTML = 'Album not found.'        
+      // anything not positive?
+      if (minutes < 0 || seconds < 0) {
+        alert('Minutes or seconds cannot be negative numbers.');
+        return;
+      }
+      // seconds greater than 60?
+      if (seconds >= 60) {
+        alert('Number of seconds cannot be greater than 60.');
         return;
       }
 
-      const albumName = spotifySearchInfo.albums.items[0].id;
-      const spotifyAlbumInfo = await (await fetch(`${SPOTIFY_ALBUM_URL}${albumName}`, {
-        headers: {
-          Authorization: `Bearer ${mgmtUserInfo.accessToken}`
-        }
-      })).json();
-
-      // getting tracks on the album that are liked by the user
-      const trackIds = [];
-      for (let track of spotifyAlbumInfo.tracks.items) {
-        trackIds.push(track.id);
+      // calculation
+      if (approval) {
+        liked += parseInt(minutes) * 60;
+        liked += parseInt(seconds);
       }
-      searchParams = { ids: trackIds };
-      const spotifyLikedTrackInfo = await (await fetch(`${SPOTIFY_USER_URL}${new URLSearchParams(searchParams)}`, {
-        headers: {
-          Authorization: `Bearer ${mgmtUserInfo.accessToken}`
-        }
-      })).json();
-
-      //calculating liked track length and total album length
-      let likedTrackDurations = 0;
-      let totalTrackDurations = 0;
-      const albumInfo = spotifyAlbumInfo.tracks.items;
-      for (let i = 0; i < albumInfo.length; i++) {
-        if (spotifyLikedTrackInfo[i]) {
-          likedTrackDurations = likedTrackDurations += albumInfo[i].duration_ms;
-        }
-        totalTrackDurations = totalTrackDurations + albumInfo[i].duration_ms;
-      }
-
-      // presenting the math
-      // nothing is displayed if calculated score is NaN (though it shouldn't be in any case, i don't think)
-      if (isNaN(Math.round(likedTrackDurations / totalTrackDurations))) {
-        document.getElementById('calculatedScore').innerHTML = '';
-      } else {
-        document.getElementById('calculatedScore').innerHTML = `Album rating: ${Math.round((likedTrackDurations / totalTrackDurations) * 10) / 2} out of 5`;
-      }
-
-    // catching if the Spotify API token needs refreshing
-    } catch (e) {
-      console.error(e);
-      document.getElementById('calculatedScore').innerHTML = 'Something bad happened. Please logout and log in to refresh the authentication.';
+      total += parseInt(minutes) * 60;
+      total += parseInt(seconds);
     }
+
+    // presenting the math
+    // nothing is displayed if calculated score is NaN
+    if (isNaN(Math.round(liked / total))) {
+      document.getElementById('calculatedScoreTrad').innerHTML = '';
+    } else {
+      document.getElementById('calculatedScoreTrad').innerHTML = `Album rating: ${Math.round((liked / total) * 10) / 2} out of 5`;
+    }
+  }
+
+  /**
+   * Adds a track to the ordered list.
+   * @method
+   */
+  addTrack() {
+    this.trackNumber += 1;
+
+    // creating node
+    const node = document.createElement('li');
+    node.id = 'track' + this.trackNumber;
+    node.innerHTML = `
+      <input id=trackMinutes${this.trackNumber} type=number></input>
+      <input id=trackSeconds${this.trackNumber} type=number></input>
+      <input id=trackApproval${this.trackNumber} type=checkbox></input>
+    `;
+
+    // adding to track information in order to calculate
+    document.getElementById('trackList').append(node);
+
+    // refreshing widgets
+    this.forceUpdate();
+  }
+
+  /**
+   * Removes the last track from the ordered list.
+   * @method
+   */
+  removeTrack() {
+    // if track number > 0 you can remove and pop things, otherwise do nothing
+    if (this.trackNumber > 0) {
+      const nodeID = 'track' + this.trackNumber;
+      document.getElementById(nodeID).remove();
+    }
+
+    // set track number to 0
+    this.trackNumber = this.trackNumber > 0 ? this.trackNumber - 1: 0;
+
+    this.forceUpdate();
   }
 
   /**
@@ -119,35 +114,16 @@ class AlbumRater extends React.Component {
    * @return {JSX}
   */
   render() {
-    const { isAuthenticated, logout, loginWithRedirect } = this.props.auth0;
     return (
       <div>
-        { isAuthenticated ?
-          <div>
-            <div style = {{float: 'left'}}>
-              <label htmlFor="artistname">Artist: </label>
-              <input type="text" id="artist" name="artistname"></input>
-            </div>
-            <div style={{float: 'right'}}>
-              <button  onClick={() => logout({returnTo: window.location.origin + window.location.pathname })}>Logout</button>
-            </div>
-            <br />
-            <div style = {{float: 'left'}}>
-              <label htmlFor="albumname">Album: </label>
-              <input type="text" id="album" name="albumname"></input>
-            </div>
-            <br />
-            <button onClick={this.calculate}>Calculate!</button>
-            <h3 id='calculatedScore'></h3>
-          </div>
-          : 
-          <div>
-            <button onClick={() => loginWithRedirect()}>Login</button>
-          </div>
-          }
+        <ol id="trackList">
+        </ol>
+        <button onClick={this.addTrack}>+</button>
+        <button onClick={this.removeTrack}>-</button>
+        <br />
+        <button onClick={this.calculateTrad}>Calculate!</button>
+        <h3 id='calculatedScoreTrad'></h3>
       </div>
     );
   };
 }
-
-export default withAuth0(AlbumRater);
