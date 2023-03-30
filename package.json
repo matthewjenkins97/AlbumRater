@@ -1,29 +1,29 @@
 {
-  "name": "SpotifyAlbumRater",
+  "name": "AlbumRater",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://matthewjenkins97.github.io/SpotifyAlbumRater/",
+  "homepage": "https://matthewjenkins97.github.io/AlbumRater/",
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "@vitejs/plugin-react": "^3.1.0",
     "auth0-js": "^9.16.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "spotify-web-api-js": "^1.5.1"
+    "spotify-web-api-js": "^1.5.1",
+    "vite": "^4.2.1",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.7"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "proxy": "http://localhost:4000",
+  "proxy": "http://localhost:5173",
   "eslintConfig": {
     "extends": "react-app"
   },

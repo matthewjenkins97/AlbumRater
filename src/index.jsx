@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Auth0Provider } from "@auth0/auth0-react";
 
-ReactDOM.render(<Router basename={process.env.PUBLIC_URL}>
+ReactDOM.render(<Router basename={import.meta.env.PUBLIC_URL}>
     <Auth0Provider
         domain="dev-06brcesa.us.auth0.com"
         clientId="aExrjSgZXrCRZAcUVZ9Ol6w2P3nBkrue"
