@@ -9,20 +9,3 @@ body{
 h1, h2, h3{
   line-height: 1.2
 }
-
-.grid-container {
-  display: grid; 
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-}
-
-.grid-child {
-  border: 1px;
-  border-color: #444;
-  border-style: solid;
-  border-spacing: 5px;
-}
-
-.grid-element  {
-  margin: 10px
-}

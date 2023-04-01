@@ -1,4 +1,5 @@
 import React from 'react';
+import "./albumrater.css"
 
 export default class AlbumRater extends React.Component {
   /**
@@ -80,8 +81,10 @@ export default class AlbumRater extends React.Component {
     node.id = 'track' + this.trackNumber;
     node.innerHTML = `
       <input id=trackMinutes${this.trackNumber} type=number></input>
+      <span>:</span>
       <input id=trackSeconds${this.trackNumber} type=number></input>
       <input id=trackApproval${this.trackNumber} type=checkbox></input>
+      <label for=trackApproval${this.trackNumber}>&#9829</label>
     `;
 
     // adding to track information in order to calculate
