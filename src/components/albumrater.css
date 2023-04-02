@@ -1,7 +1,7 @@
-li input[type='checkbox'] {
-    display: none
+input[id^='trackMinutes'] {
+    width: 30px;
 }
 
-li input[type='checkbox']:checked ~ label {
-    color: red
+input[id^='trackSeconds'] {
+    width: 30px;
 }
